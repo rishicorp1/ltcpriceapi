@@ -18,6 +18,9 @@ def rotate_proxies(proxies_list):
 # Create a generator for rotating proxies
 proxy_generator = rotate_proxies(get_proxies())
 
+# Toggle to use proxies or not
+use_proxies = True  # Set to False if you don't want to use proxies
+
 @app.route('/')
 def get_ltc_price():
     # CoinGecko API endpoint and parameters
@@ -35,14 +38,19 @@ def get_ltc_price():
     }
 
     try:
-        # Get the next proxy from the generator
-        current_proxy = next(proxy_generator)
+        # Check if proxies should be used
+        if use_proxies:
+            # Get the next proxy from the generator
+            current_proxy = next(proxy_generator)
 
-        # Create the proxies dictionary
-        proxies = {
-            'http': f'http://{current_proxy}',
-            'https': f'http://{current_proxy}',
-        }
+            # Create the proxies dictionary
+            proxies = {
+                'http': f'http://{current_proxy}',
+                'https': f'http://{current_proxy}',
+            }
+        else:
+            # If not using proxies, set proxies to None
+            proxies = None
 
         # Make the CoinGecko API request with the current proxy
         response = requests.get(url, params=params, headers=headers, proxies=proxies)
@@ -53,7 +61,7 @@ def get_ltc_price():
             ltc_price = data['litecoin']['usd']
             result = {
                 'ltc_price': ltc_price,
-                'current_proxy': current_proxy,
+                'current_proxy': current_proxy if use_proxies else None,
             }
             return jsonify(result)
         else:
