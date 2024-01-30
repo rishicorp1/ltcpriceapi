@@ -18,7 +18,7 @@ def rotate_proxies(proxies_list):
 # Create a generator for rotating proxies
 proxy_generator = rotate_proxies(get_proxies())
 
-@app.route('/', methods=['GET'])
+@app.route('/')
 def get_ltc_price():
     # CoinGecko API endpoint and parameters
     url = 'https://api.coingecko.com/api/v3/simple/price'
