@@ -19,7 +19,7 @@ def rotate_proxies(proxies_list):
 proxy_generator = rotate_proxies(get_proxies())
 
 # Toggle to use proxies or not
-use_proxies = True  # Set to False if you don't want to use proxies
+use_proxies = False  # Set to False if you don't want to use proxies
 
 @app.route('/')
 def get_ltc_price():
